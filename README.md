@@ -24,5 +24,3 @@ This contains two files: `mcphase_sqw.m` and `sw_plotspec.m`.
 The `sw_plotspec.m` file is required because the original SpinW version
 assumes that there are 2 * _N_ modes, where _N_ is the number of magnetic ions,
 but for RPA calculcations the number of modes can exceed this.
-
-Some examples require [Horace](https://github.com/pace-neutrons/Horace/) to be installed.

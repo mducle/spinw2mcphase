@@ -233,7 +233,7 @@ function swobj = run_mcphase(swobj, tstinfo)
     [rs,rv]=perl('run_env.pl',mcphasedir,sprintf('mcdispit -c -minE %f -maxE %f -max %f', e1, e2, S2*10)); if(length(rs)>8e3); rs=rs((end-8e3):end); end
     %[rs,rv]=perl('run_env.pl',mcphasedir,'mcdispit -c'); if(length(rs)>8e3); rs=rs((end-8e3):end); end
     if rv~=0; error(sprintf('Failed to run mcdispit program to calculate single ion levels. Output is:\n%s',rs)); end
-    [rs,rv]=perl([mcphasedir sp 'bin' sp 'range.pl'],'7','0.01','1e9','results/mcdisp.trs');
+    [rs,rv]=perl([mcphasedir sp 'bin' sp 'range.pl'],'7','0.01','1e99','results/mcdisp.trs');
     [rs,rv]=perl([mcphasedir sp 'bin' sp 'range.pl'],'6',num2str(emin),num2str(emax),'results/mcdisp.trs');
     if rv~=0; error(sprintf('Failed to run range program to remove zero weight modes. Output is:\n%s',rs)); end
     fid = fopen('results/mcphas.sps'); while true; ll=strip(fgetl(fid)); if ll(1)~='#'; break; end; end
@@ -333,7 +333,7 @@ function [w, s, sab] = run_mcdisp(h, k, l, infiles)
       % Combines all the output files
       for np = 1:numproc
         filename = ['mcdisp_temp-p' num2str(np) sp 'results' sp 'mcdisp.qei'];
-        [rs,rv]=perl([mcphasedir sp 'bin' sp 'range.pl'],'10','-0.0001','1e9',filename);
+        [rs,rv]=perl([mcphasedir sp 'bin' sp 'range.pl'],'10','-0.0001','1e99',filename);
         if rv~=0; error(sprintf('Failed to run range program to remove uncalculated modes. Output is:\n%s',rs)); end
         [ha,hb,hc,t,qh,qk,ql,qmod,en,cs,~,~,...
          sr{1},si{1},sr{2},si{2},sr{3},si{3},sr{4},si{4},sr{5},si{5},sr{6},si{6},sr{7},si{7},sr{8},si{8},sr{9},si{9}] = ...

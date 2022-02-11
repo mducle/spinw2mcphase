@@ -7,11 +7,16 @@ global temperature; temperature = 0.02;
 
 swobj = sw_model('squareAF', [1 0.3]);
 swobj.genmagstr('mode', 'direct', 'S', [1 0 0], 'n', [0 0 1], 'k', [0.5 0.5 0]);
+
+% Note that LSWT and the MF-RPA treats single-ion anisotropy differently
+% so SpinW and McPhase calculations may not agree with non-zero SIA values below
+swobj.addmatrix('label', 'D', 'value', diag([0 0 0])); swobj.addaniso('D')
+
 qpts = {[0 1.5 0] [0 1 0] [0 0 0] [0.5 0.5 0.5] [1 1 0] [0 1 0] [0.5 0.5 0] 100};
 spec = sw_egrid(sw_neutron(swobj.spinwave(qpts,'hermit',true)),'Evect',0:0.01:5);
 hkl = sw_qscan(qpts);
 specm = sw_egrid(sw_neutron(mcphase_sqw(hkl(1,:), hkl(2,:), hkl(3,:), swobj)),'Evect',0:0.01:5);
 
 figure; 
-subplot(211); sw_plotspec(spec,'mode','color','dE',0.1,'dashed',true); title('SpinW');
-subplot(212); sw_plotspec(specm,'mode','color','dE',0.1,'dashed',true); title('McPhase');
+subplot(211); sw_plotspec(spec,'mode','color','dE',0.1,'dashed',true); title('SpinW'); legend('off');
+subplot(212); sw_plotspec(specm,'mode','color','dE',0.1,'dashed',true); title('McPhase'); legend('off');
